@@ -124,7 +124,7 @@ public class ConnectFour extends Application
 	public boolean BoardisFull() 
 	{
 		/*
-		 * Method BoardIsFull checks whether the whole board is full or not and
+		 * Method BoardIsFull checks whether the whole board is full or not
  		 * Then, it returns the result as a boolean: True representing Full 
 		 */
 		
@@ -132,7 +132,7 @@ public class ConnectFour extends Application
 			for (int j = 0; j < 7; j++)
 				if (cell[i][j].getToken() == ' ')
 					return false;
-	    return true;//returns true if nne of the element in the array is ' '.
+	    return true;//returns true if none of the element in the array is ' '.
 	}
 	
 	public boolean ColumnIsFull(int col) 
@@ -322,7 +322,7 @@ public class ConnectFour extends Application
 		    dropShadow.setOffsetY(3.0);
 		    dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		    	 
-			this.setPrefSize(100, 100);//sets the preferred size of a single box
+			this.setPrefSize(100, 100);//set the preferred size of a single box
 			
 			Circle circle = new Circle(50,50,40, Color.WHITE);//making a white circle
 			circle.setStroke(Color.BLACK);//Set the border of the circle to Black
