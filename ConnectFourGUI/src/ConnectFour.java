@@ -124,7 +124,7 @@ public class ConnectFour extends Application
 	public boolean BoardisFull() 
 	{
 		/*
-		 * Method BoardIsFull checks whether the whole board is full or not
+		 * Method BoardIsFull checks whether the whole board is full or not and
  		 * Then, it returns the result as a boolean: True representing Full 
 		 */
 		
