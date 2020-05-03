@@ -322,7 +322,7 @@ public class ConnectFour extends Application
 		    dropShadow.setOffsetY(3.0);
 		    dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		    	 
-			this.setPrefSize(100, 100);//set the preferred size of a single box
+			this.setPrefSize(100, 100);//sets the preferred size of a single box
 			
 			Circle circle = new Circle(50,50,40, Color.WHITE);//making a white circle
 			circle.setStroke(Color.BLACK);//Set the border of the circle to Black
