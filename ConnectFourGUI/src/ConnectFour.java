@@ -132,7 +132,7 @@ public class ConnectFour extends Application
 			for (int j = 0; j < 7; j++)
 				if (cell[i][j].getToken() == ' ')
 					return false;
-	    return true;//returns true if none of the element in the array is ' '.
+	    return true;//returns true if nne of the element in the array is ' '.
 	}
 	
 	public boolean ColumnIsFull(int col) 
