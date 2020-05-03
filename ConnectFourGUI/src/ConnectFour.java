@@ -13,12 +13,13 @@
  * 	Dr. Joseph Hobbs
  */
 
-//importing all the needed libraries to run the application
+//importing all important essential libraries
 import java.util.Optional;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Scene;
@@ -32,70 +33,92 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-/*
- * Class ConnectFour is responsible for running the game Connect Four both the Front End and the Backend
- */
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 public class ConnectFour extends Application 
 {
+	/*
+	 * Class ConnectFour is responsible for running the game Connect Four both the Front End and the Backend
+	*/
 	public char Turn = 'Y'; //initialize the starting player to Yellow
-	private Cell[][] cell =  new Cell[6][7];
+	private Cell[][] cell =  new Cell[6][7];//Calls the cell class to make both the GUI and backend of the game
 
 	@Override
 	public void start(Stage primaryStage) 
 	{
-		GridPane grid = new GridPane();
+		GridPane grid = new GridPane();//make a new GridPane called grid to make the Grid design for the game
+		final StackPane stack = new StackPane();//Make a new stackPane to create a stack of HBOX to add to the top
+		BorderPane borderPane = new BorderPane();//make a new BorderPane to divide the whole PrimaryStage to TOP,CENTER AND BOTTOM
 		
 		for (int i = 0; i < 6; i++)
 		      for (int j = 0; j < 7; j++)
-		    	  grid.add(cell[i][j] = new Cell(primaryStage), j, i);
+		    	  grid.add(cell[i][j] = new Cell(primaryStage), j, i);//make the ixj number of Cell object
 		
-		BorderPane borderPane = new BorderPane();
-	    Button button1 = new Button("NEW GAME");
-		HBox hbox = new HBox(button1);
-		borderPane.setTop(hbox);
-		borderPane.setBottom(grid);		
+		Button button1 = new Button("NEW GAME");//new Button to start a new game
+		
+		Text t = new Text("CONNECT FOUR");//Header of the Game
+		t.setFont(Font.font ("Algerian", 35));//set Header FONT to Algerian
+		t.setFill(Color.BLACK);//Set the text color to Black
+		
+		DropShadow ds = new DropShadow();//Create a new dropShadow for Text to make it stand out
+		ds.setOffsetY(4.0f);
+		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
+		t.setEffect(ds);//set effects to Text object
+
+		HBox hboxTop = new HBox(t);//Make a new Hbox for the top
+		hboxTop.setPadding(new Insets(23, 0, 0,185));//set padding around the box
+		
+		HBox hboxBottom = new HBox(button1);//Make a new Hbox for the bottom
+		hboxBottom.setPadding(new Insets(26, 0, 0, 550));//set padding around the box
+			
+		stack.getChildren().addAll(hboxTop,hboxBottom);//Add hbox2 and Hbox to the stack
+		
+		borderPane.setTop(stack);//Set stack to the Top of the borderPane
+		borderPane.setBottom(grid);//Set grid i.e. the board to the Bottom of borderPane
 		
 		button1.setOnMouseClicked(new EventHandler<MouseEvent>() 
 		{
 			@Override 
-	        public void handle(MouseEvent event) 
+	        public void handle(MouseEvent event) //this is the event handler for NEW GAME button
 			{        			  
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-	        	alert.setTitle("Connect Four");
-	        	alert.setHeaderText("A NEW GAME HAS BEEN REQUESTED");
+				Alert alert = new Alert(AlertType.CONFIRMATION);//Make a new Confirmation AlertBox
+	        	alert.setTitle("Connect Four");//Set the titile to Connect Four
+	        	alert.setHeaderText("A NEW GAME HAS BEEN REQUESTED");//Message for when the User wants to start a new game
 	        	alert.setContentText("DO YOU WANT TO PLAY A NEW GAME?");
 
-	        	Optional<ButtonType> result = alert.showAndWait();
+	        	Optional<ButtonType> result = alert.showAndWait();//Show the AlertBox to the user
 	        	
-	        	if (result.get() == ButtonType.OK)
+	        	if (result.get() == ButtonType.OK)//If user clicks the OK Button
 	        	{
 	        		for(int i=0;i<7;i++) 
 	        		{
 	        			for(int j=0;j<6;j++) 
 	        			{
-	        				cell[j][i].setToken(' ');
-	        				cell[j][i].ClearBoard();
-	        				Turn = 'Y';
+	        				cell[j][i].setToken(' ');//Clear the 2D array
+	        				cell[j][i].ClearBoard();//Clear all nodes from the board
+	        				Turn = 'Y';//Initialize the current player to Y
 	        			}
 	        		}
 	        	} 
 	        	
 	        	else 
 	        	{
-	        		alert.close();   
-	        		primaryStage.close();
+	        		alert.close();//Closes the alert box
+	        		primaryStage.close();//Closes the primary stage
 	        	}
 			}
 		});
 		    
-		Scene scene = new Scene(borderPane, 650, 670);
-	    primaryStage.setTitle("Connect Four"); 
-	    primaryStage.setScene(scene);
-	    primaryStage.setResizable(false);
-	    primaryStage.show();    	    
+		Scene scene = new Scene(borderPane, 650, 670); //makes a new scene of 650x670 and then adds borderPane to it
+	    primaryStage.setTitle("Connect Four"); //Set the Title for the PrimaryStage
+	    primaryStage.setScene(scene);	//set whole scene to the PrimaryStage
+	    primaryStage.setResizable(false);//To stop the user from changing the scene size because the functioning of the app depends on fixed cordinates
+	    primaryStage.show();//show the Primary Stage 	    
 	}	
 	
 	public boolean BoardisFull() 
@@ -109,7 +132,7 @@ public class ConnectFour extends Application
 			for (int j = 0; j < 7; j++)
 				if (cell[i][j].getToken() == ' ')
 					return false;
-	    return true;
+	    return true;//returns true if none of the element in the array is ' '.
 	}
 	
 	public boolean ColumnIsFull(int col) 
@@ -121,7 +144,7 @@ public class ConnectFour extends Application
 		for (int i=0;i<6;i++) 
 			if (cell[i][col].getToken() == ' ') 
 				return false;
-		return true;
+		return true;//returns true if the specified column does not have a empty spot for the disk
 	}
 	
 	public boolean isWinner() 
@@ -147,8 +170,8 @@ public class ConnectFour extends Application
 					{
 						if (cell[i][j].getToken() == 'R') 
 						{		
-							cell[i][j].ClearBoard();//clear the node at cell[i][j] and replace with the flashing one
-							cell[i][j].RedFlash();
+							cell[i][j].ClearBoard();//Clear the node at cell[i][j] and replace with the flashing one
+							cell[i][j].RedFlash();//Add the Red Flashing Disk
 							cell[i][j+1].ClearBoard();
 							cell[i][j+1].RedFlash();
 							cell[i][j+2].ClearBoard();
@@ -160,7 +183,7 @@ public class ConnectFour extends Application
 						if (cell[i][j].getToken() == 'Y') 
 						{
 							cell[i][j].ClearBoard();
-							cell[i][j].YellowFlash();
+							cell[i][j].YellowFlash();//Add the Yellow Flashing Disk
 							cell[i][j+1].ClearBoard();
 							cell[i][j+1].YellowFlash();
 							cell[i][j+2].ClearBoard();
@@ -290,149 +313,166 @@ public class ConnectFour extends Application
 
 	public class Cell extends Pane 
 	{
-		private char token = ' ';
+		private char token = ' ';//set the initial private token to ' '
 		public Cell(Stage primaryStage) 
 		{
-			DropShadow dropShadow = new DropShadow();
+			DropShadow dropShadow = new DropShadow();//Creating a DropShadow object to be implemented to the circle
 		   	dropShadow.setRadius(10.0);
 		    dropShadow.setOffsetX(3.0);
 		    dropShadow.setOffsetY(3.0);
 		    dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		    	 
-			setStyle("-fx-border-color: black"); 
-			this.setPrefSize(100, 100);
-			Circle circle = new Circle(50,50,40, Color.WHITE);
-			circle.setStroke(Color.BLACK);
-			Rectangle rectangle = new Rectangle(100,100,Color.BLUE);
-		 	circle.setEffect(dropShadow);
-			getChildren().add(rectangle);
-			getChildren().add(circle);
+			this.setPrefSize(100, 100);//set the preferred size of a single box
+			
+			Circle circle = new Circle(50,50,40, Color.WHITE);//making a white circle
+			circle.setStroke(Color.BLACK);//Set the border of the circle to Black
+			
+			Rectangle rectangle = new Rectangle(100,100,Color.BLUE);//making a square in GUI
+		 	circle.setEffect(dropShadow);//adding the drop shadow into the circle
+		 	
+			getChildren().add(rectangle);//This adds the blue Rectangle to the GUI
+			getChildren().add(circle);//This adds the White Circle to the GUI where Disk drops
 		      
 		   		      
 			this.setOnMouseMoved(new EventHandler<MouseEvent>() 
 			{
+				/*
+				 * setOnMouseMoved is used to track the movement of the mouse and change the color
+				 * of the disk according to the current player so that the GUI updates real time
+				 * without having to click any button
+				 */
 			   	@Override
 			   	public void handle(MouseEvent event) 
 			   	{
 			   		if (Turn == 'Y') 
 			   		{
-			   			circle.setFill(Color.YELLOW);
+			   			circle.setFill(Color.YELLOW);//Fills the current instance of circle object to Yellow if the player is Y
 			   		}
 		           
 			   		if (Turn == 'R') 
 			   		{
-			   			circle.setFill(Color.RED);
+			   			circle.setFill(Color.RED);//Fills the current instance of circle object to Red if the player is R
 			   		}
 			   	  }
 			});
 		      
 			this.setOnMouseExited(new EventHandler<MouseEvent>() 
 			{
+				/*
+				 * setOnMouseMoved is used to track the movement of the mouse and change the color
+				 * of the disk to default i.e. 'white' when the mouse exists
+				 */
 				@Override 
 			    public void handle(MouseEvent event) 
 			    {
-			      	  circle.setFill(Color.WHITE);
+			      	  circle.setFill(Color.WHITE);//fills the space to white
 			    }
 			});
 			      
 			this.setOnMouseClicked(new EventHandler<MouseEvent>()
 			{
+				/*
+				 * setOnMouseMoved is used to track the button pressed of the mouse and update the current player
+				 * update the Token, check Winner, column is full, board is full and drops the current disk if
+				 * the game is still in progress
+				 */
 		    	@Override
 	            public void handle(MouseEvent t) 
 		    	{
 			         if (Turn == 'Y') 
 			         {
-			        	 circle.setFill(Color.RED);
+			        	 circle.setFill(Color.RED);//Fills the space in RED
 			         }
 				         
 			         if (Turn == 'R')
 				     {
-				       	 circle.setFill(Color.YELLOW);
+				       	 circle.setFill(Color.YELLOW);//FIlls the space in Yellow
 			         }
 		            	
-		           	int column = (((int)t.getSceneX())/100)%100;
+		           	int column = (((int)t.getSceneX())/100)%100;//getting the current mouse position in  the scene
 		            	
-		          	if (Turn != ' ') 
+		          	if (Turn != ' ') //Turn is set to ' ' if the game is over so this condition is checking the status if the game is still running
 		           	{
-			    		if (ColumnIsFull(column)) 
+			    		if (ColumnIsFull(column)) //Runs if the column if full
 			    		{	
-			    			Alert alert = new Alert(AlertType.INFORMATION);
-				    		alert.setTitle("Connect Four");
+			    			Alert alert = new Alert(AlertType.INFORMATION);//Create a new INFORMATION AlertBox
+				    		alert.setTitle("Connect Four");//Title of the Alert
 				    		alert.setHeaderText("THE SELECTED COLUMN IS FULL");
 				   			alert.setContentText("PLEASE SELECT ANOTHER COLUMN");
-				   			alert.showAndWait();
-				   			Turn = (Turn == 'Y') ? 'R' : 'Y';
+				   			alert.showAndWait();//show the AlertBox
+				   			Turn = (Turn == 'Y') ? 'R' : 'Y';//change the current player to avoid error while checking
 			     		}
 				    		
 			    		else 
 			    		{
-			    			dropDisk(Turn,column);				    		}
-		            	}
+			    			dropDisk(Turn,column);//drop the current disk if the game is still in progress				  		
+			    		}
+		            }
 				    	
-		          	if (BoardisFull()) 
+		          	if (BoardisFull()) //calls the BoardisFull to check whether the board is full or not
 		          	{			
-				    	Alert alert = new Alert(AlertType.CONFIRMATION);
+				    	Alert alert = new Alert(AlertType.CONFIRMATION);//make a new CONFIRMATION alert box
 		        		alert.setTitle("Connect Four");
 		        		alert.setHeaderText("THE BOARD IS FULL");
 		        		alert.setContentText("DO YOU WANT TO PLAY A NEW GAME?");
 
 		        		Optional<ButtonType> result = alert.showAndWait();
 		        			
-		        		if (result.get() == ButtonType.OK)
+		        		if (result.get() == ButtonType.OK)//If user pressed the OK Button
 		       			{
 		       				  Turn = ' ';
 		       				  for(int i=0;i<7;i++) 
 		       				  {
 		       	        		  for(int j=0;j<6;j++) 
 		       	        		  {
-		       	        			  cell[j][i].setToken(' ');
-		       	        			  cell[j][i].ClearBoard();
-	        	        			  Turn = 'Y';
+		       	        			  cell[j][i].setToken(' ');//set current token to ' '
+		       	        			  cell[j][i].ClearBoard();//Clears the board
+	        	        			  Turn = 'Y';//set the player to Yellow
 	        	        		  }
 		       				  }
 		        		} 
 		        	
-		        		else 
+		        		else //if user Pressed any button except than OK
 		        		{
-		        			  Turn = ' ';
-		        		      alert.close();
-		       			      primaryStage.close();
+		        			  Turn = ' ';//Indicates to end the game
+		        		      alert.close();//closes the alert
+		       			      primaryStage.close();//closes the whole GUI
 		       			}
 				    } 
 				    	
-		          	if (isWinner()) 
+		          	if (isWinner()) //checks if someone has won the game
 				    {
-				   		Alert alert = new Alert(AlertType.CONFIRMATION);
+				   		Alert alert = new Alert(AlertType.CONFIRMATION);//make a new CONFIRMATION AlertBox
 		        		alert.setTitle("Connect Four");
 		       			alert.setHeaderText(Turn + " HAS WON THE GAME");
 		       			alert.setContentText("DO YOU WANT TO PLAY A NEW GAME?");
 		        			  
 		       			Optional<ButtonType> result = alert.showAndWait();
 		        			  
-		       			if (result.get() == ButtonType.OK)
+		       			if (result.get() == ButtonType.OK)//if the player pressed OK
 		       			{
-		       				  Turn = 'Y';
+		       				  Turn = 'Y';//set the Player to Yellow
 		       				  for(int i=0;i<7;i++) 
 		       				  {
 	        	        		  for(int j=0;j<6;j++) 
 	        	        		  {
-		       	        			  cell[j][i].setToken(' ');
-		       	        			  cell[j][i].ClearBoard();
+		       	        			  cell[j][i].setToken(' ');//clears the 2D array to start again
+		       	        			  cell[j][i].ClearBoard();//clears the board to start a new game
 		       	        		  }
 	        				  }		  
 		        		}
 		        			
 		       			else 
 		        		{
-		        			Turn = ' ';
-		        			alert.close();
-		       				primaryStage.close();
+		        			Turn = ' ';//take Turn to ' ' to end game
+		        			alert.close();//close the alert
+		       				primaryStage.close();//closes the whole GUI
 		       			}
 				   }
 				    	
 		       		else
 		       		{
-			    		Turn = (Turn == 'Y') ? 'R' : 'Y';
+			    		Turn = (Turn == 'Y') ? 'R' : 'Y';//If nothing is satisfied, game is still running so change player
 			   		}
 		    	}
 			}); 
